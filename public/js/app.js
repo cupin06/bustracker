@@ -62,8 +62,8 @@ GMaps.prototype.removeMarkersOfType = function (poi_type) {
 };
 
 gMarkers['bus_route'] = [
-	{lat:"3.119816",lng:"101.665262",infoWindow:{content:"<p>Hostel Lelaki</p>"},icon:"images/bus.png"},
-	{lat:"3.124816",lng:"101.673439",infoWindow:{content:"<p>Hostel Perempuan</p>"},icon:"http://shrt.tf/1w"},
+	{lat:"3.119816",lng:"101.665262",infoWindow:{content:"<p>Hostel Lelaki</p>"},icon:"images/hotel.png"},
+	{lat:"3.124816",lng:"101.673439",infoWindow:{content:"<p>Hostel Perempuan</p>"},icon:"images/hotel.png"},
 	{lat:"3.159236",lng:"101.701775",infoWindow:{content:"<p>University Kuala Lumpur</p>"},icon:"images/unikl.png"}
 ];
 map.addMarkersOfType('bus_route');

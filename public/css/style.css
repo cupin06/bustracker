@@ -15,13 +15,13 @@ body {
 #currentLocation {
     width: 20%;
     position: absolute;
-    top: 10px;
-    left: 20px;
+    top: 5%;
+    right: 5%;
     z-index: 9;
     background-color: #2f4050;
     padding: 20px;
     color: #fff !important;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
 #currentLocation h3 {
@@ -30,4 +30,18 @@ body {
 
 #currentLocation b {
     color: #1bbc9b;
+}
+
+@media (max-width: 768px) {
+    #currentLocation {
+        width: 50%;
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        z-index: 9;
+        background-color: #2f4050;
+        padding: 20px;
+        color: #fff !important;
+        opacity: 0.5;
+    }
 }

@@ -53,7 +53,7 @@
         }
 
         gMarkers['current_location'] = [
-            {lat:gpsData.latitude,lng:gpsData.longitude,infoWindow:{content:"<p>Hostel Lelaki</p>"},icon:"images/bus.png"}
+            {lat:gpsData.latitude,lng:gpsData.longitude,infoWindow:{content:"<p>Current Bus Location</p>"},icon:"images/bus.png"}
         ];
         map.addMarkersOfType('current_location');
         map.setCenter(gpsData.latitude, gpsData.longitude);
