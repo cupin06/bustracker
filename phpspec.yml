@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: bustracker
+        psr4_prefix: bustracker
+        src_path: app
