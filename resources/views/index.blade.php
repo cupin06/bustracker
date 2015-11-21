@@ -22,13 +22,20 @@
 </head>
 <body>
 <div id="map"></div>
-<div id="currentLocation">
-    <h3>Current Location</h3>
-    <b>Address:</b> <span id="address"></span><br />
-    <b>Latitude:</b> <span id="latitude"></span><br />
-    <b>Longitude:</b> <span id="longitude"></span><br />
-    <b>Estimated Arrival Time:</b> <span id="arrival_time"></span><br />
+
+<a href="#" class="toggle-panel">
+    <span class="burger-x"></span>
+</a>
+<div id="currentLocation" class="scotch-panel-right" style="top: 0px; right: -70%; width: 70%; height: 100%; position: absolute; z-index: 888888; overflow: hidden; backface-visibility: hidden;">
+    <div id="currentLocation">
+        <h3>Current Location</h3>
+        <b>Address:</b> <span id="address"></span><br />
+        <b>Latitude:</b> <span id="latitude"></span><br />
+        <b>Longitude:</b> <span id="longitude"></span><br />
+        <b>Estimated Arrival Time:</b> <span id="arrival_time"></span><br />
+    </div>
 </div>
+
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
@@ -36,7 +43,19 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/app.js"></script>
+<script src="js/scotchpanel/scotchPanels.min.js"></script>
 <script>
+
+    $('#currentLocation').scotchPanel({
+        containerSelector: 'body', // As a jQuery Selector
+        direction: 'right', // Make it toggle in from the left
+        duration: 300, // Speed in ms how fast you want it to be
+        transition: 'ease', // CSS3 transition type: linear, ease, ease-in, ease-out, ease-in-out, cubic-bezier(P1x,P1y,P2x,P2y)
+        clickSelector: '.toggle-panel', // Enables toggling when clicking elements of this class
+        distanceX: '30%', // Size fo the toggle
+        enableEscapeKey: true // Clicking Esc will close the panel
+    });
+
     var es = new EventSource("<?php echo action('GpsController@polingGPSData'); ?>");
 
     es.addEventListener("message", function(e) {
