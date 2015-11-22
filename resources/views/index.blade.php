@@ -32,6 +32,8 @@
         <b>Address:</b> <span id="address"></span><br />
         <b>Latitude:</b> <span id="latitude"></span><br />
         <b>Longitude:</b> <span id="longitude"></span><br />
+        <b>Status:</b> <span id="status"></span><br />
+        <b>Distance:</b> <span id="distance"></span><br />
         <b>Estimated Arrival Time:</b> <span id="arrival_time"></span><br />
     </div>
 </div>
@@ -64,6 +66,8 @@
         $('#latitude').text(gpsData.latitude);
         $('#longitude').text(gpsData.longitude);
         $('#address').text(gpsData.address);
+        $('#status').text(gpsData.status);
+        $('#distance').text(gpsData.distance);
         var arrivalTime = parseInt(gpsData.estimated_duration.replace(/^\D+/g, ''));
         $('#arrival_time').text(arrivalTime + ' minutes');
         console.log(realMarkers['current_location']);

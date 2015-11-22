@@ -19,3 +19,5 @@ Route::get('/gps/store', ['uses' => 'GpsController@store', 'as' => 'gps.store'])
 Route::get('/gps/', ['uses' => 'GpsController@index', 'as' => 'gps.index']);
 Route::get('/gps/last', ['uses' => 'GpsController@getLastData', 'as' => 'gps.last']);
 Route::get('/gps/polling', ['uses' => 'GpsController@polingGPSData', 'as' => 'gps.polling']);
+
+Route::get('/busstatus/set', ['uses' => 'BusStatusController@set', 'as' => 'busstatus.set']);

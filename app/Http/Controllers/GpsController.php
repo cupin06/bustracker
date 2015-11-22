@@ -8,6 +8,7 @@
 
 namespace bustracker\Http\Controllers;
 
+use bustracker\Model\BusStatus;
 use bustracker\Model\Gps;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -17,10 +18,12 @@ class GpsController extends Controller
 {
 
     private $gpsModel;
+    private $busStatusModel;
 
-    public function __construct(Gps $gpsModel)
+    public function __construct(Gps $gpsModel, BusStatus $busStatusModel)
     {
         $this->gpsModel = $gpsModel;
+        $this->busStatusModel = $busStatusModel;
     }
 
     public function index()
@@ -62,14 +65,32 @@ class GpsController extends Controller
         $lastGPSData = $this->gpsModel->orderBy('id', 'desc')->first();
 
         //request the directions
+
+        //https://maps.googleapis.com/maps/api/distancematrix/json?origins=3.159236,101.701775&destinations=3.119816,101.665262
+        //&mode=driving&key=AIzaSyARWwkONQ4RXXVJrrYRBCaOtYrp9hAg2sU
+
         // https://maps.googleapis.com/maps/api/distancematrix/json?origins=3.119816,101.665262&destinations=3.159236,101.701775
         //&departure_time=1448110050&mode=driving&traffic_model=pessimistic&key=AIzaSyARWwkONQ4RXXVJrrYRBCaOtYrp9hAg2sU
-        $routes=json_decode(file_get_contents(
-            'http://maps.googleapis.com/maps/api/directions/json?&alternatives=true&origin=' . $lastGPSData['latitude']
-            . ',' . $lastGPSData['longitude'] . '&destination=3.159236,101.701775'
-        ))->routes;
-        $lastGPSData['distance'] = $routes[0]->legs[0]->distance->text;
-        $lastGPSData['estimated_duration'] = $routes[0]->legs[0]->duration->text;
+
+        $busDestination = $this->busStatusModel->select('destination')->orderBy('id', 'desc')->first()['destination'];
+
+        if (strcasecmp('unikl', $busDestination) == 0) {
+            $routes=json_decode(file_get_contents(
+                'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $lastGPSData['latitude']
+                . ',' . $lastGPSData['longitude'] . '&destinations=3.159236,101.701775' . '&key=' . env('GOOGLE_MAP_KEY')
+            ), true);
+            $lastGPSData['distance'] = $routes['rows'][0]['elements'][0]['distance']['text'];
+            $lastGPSData['estimated_duration'] = $routes['rows'][0]['elements'][0]['duration']['text'];
+            $lastGPSData['status'] = 'Heading to UNIKL MIIT';
+        } else {
+            $routes=json_decode(file_get_contents(
+                'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $lastGPSData['latitude']
+                . ',' . $lastGPSData['longitude'] . '&destinations=3.119816,101.665262' . '&key=' . env('GOOGLE_MAP_KEY')
+            ), true);
+            $lastGPSData['distance'] = ' ' . $routes['rows'][0]['elements'][0]['distance']['text'];
+            $lastGPSData['estimated_duration'] = $routes['rows'][0]['elements'][0]['duration']['text'];
+            $lastGPSData['status'] = ' Heading to HOSTEL';
+        }
 
         return json_encode($lastGPSData);
     }
@@ -81,7 +102,7 @@ class GpsController extends Controller
         $response->headers->set('Cache-Control', 'no-cache');
         $response->setCallback(
             function() {
-                echo "retry: 30000\n\n"; // no retry would default to 3 seconds.
+                echo "retry: 10000\n\n"; // no retry would default to 3 seconds.
                 echo "data: " . $this->getLastData() . "\n\n";
                 ob_flush();
                 flush();
